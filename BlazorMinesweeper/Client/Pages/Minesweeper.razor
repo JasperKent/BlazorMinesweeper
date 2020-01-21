@@ -1,0 +1,23 @@
+﻿@page "/minesweeper"
+@using BlazorMinesweeper.Shared
+    
+<h3>Minesweeper</h3>
+
+<div class="mine-table">@for(int row = 0; row <20; ++row)
+    {
+        <div>
+            @for(int col = 0; col < 40; ++col)
+            {
+                int r = row;
+                int c = col;
+                <button class="@manager.Class(c,r)" @onmousedown="e => manager.MouseDown(e,c,r)" @onclick="() => manager.Click(c,r)">@manager.Content(c,r)</button>
+            }
+        </div>
+    }
+</div>
+
+<button @onclick="manager.Reset">Reset</button>
+
+@code {
+    SweeperManager manager = new SweeperManager();
+}
