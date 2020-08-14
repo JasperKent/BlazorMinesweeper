@@ -10,7 +10,7 @@ namespace BlazorMinesweeper.Client
 
     public class Cell
     {
-        private static readonly string[] _markers = { " ", "X", "?" };
+        private string[] _markers = { "mine-hidden", "mine-marked", "mine-query" };
 
         public bool Mined { get; set; }
         public bool Shown { get; set; }
@@ -19,24 +19,14 @@ namespace BlazorMinesweeper.Client
             get
             {
                 if (!Shown)
-                    return "mine-hidden";
+                    return _markers[(int)Marker];
                 else if (Mined)
                     return "mine-blown";
                 else 
-                    return "mine-shown";
+                    return $"val-{Neighbours} mine-shown";
             }
         }
         public int Neighbours { get; set; }
-        public string Content
-        {
-            get
-            {
-                if (Shown)
-                    return !Mined && Neighbours > 0 ? Neighbours.ToString() : "";
-                else
-                    return _markers[(int)Marker];
-            }
-        }
         public int Column { get; set; }
         public int Row { get; set; }
         public Marker Marker { get; set; }
@@ -48,6 +38,8 @@ namespace BlazorMinesweeper.Client
 
         public SweeperManager()
         {
+            Console.WriteLine("Value is: " + Environment.SystemDirectory); 
+
             Reset();
         }
 
@@ -59,7 +51,7 @@ namespace BlazorMinesweeper.Client
             {
                 for (int row = 0; row < 20; ++row)
                 {
-                    _field[col, row] = new Cell { Mined = rand.Next(100) > 80, Column = col, Row = row };
+                    _field[col, row] = new Cell { Mined = rand.Next(100) > 85, Column = col, Row = row };
                 }
             }
 
@@ -82,7 +74,7 @@ namespace BlazorMinesweeper.Client
             {
                 for (int y = row - 1; y <= row + 1; ++y)
                 {
-                    if (x > 0 && x < 40 && y > 0 && y < 20)
+                    if (x >= 0 && x < 40 && y >= 0 && y < 20 && !(x == col && y == row))
                         action(_field[x, y]);
                 }
             }
@@ -100,6 +92,37 @@ namespace BlazorMinesweeper.Client
                       if (!cell.Shown)
                           Click(cell.Column, cell.Row);
                   });
+        }
+
+        public void DoubleClick(int col, int row)
+        {
+            var cell = _field[col, row];
+
+            Console.WriteLine($"Dbl Clicked ({col},{row}).");
+
+            if (cell.Shown)
+            {
+                int exposedNeighbours = 0;
+                
+                VisitNeighbours(col, row, neighbour =>
+                {
+                    if (neighbour.Marker == Marker.Mine && neighbour.Mined)
+                        ++exposedNeighbours;
+                });
+
+                Console.WriteLine($"Exposed neightbours: {exposedNeighbours}.");
+                Console.WriteLine($"Neightbours: {cell.Neighbours}.");
+
+                if (exposedNeighbours == cell.Neighbours)
+                    VisitNeighbours(col, row, neighbour =>
+                    {
+                        if (neighbour.Marker != Marker.Mine)
+                        {
+                            Console.WriteLine($"Clicking ({neighbour.Column},{neighbour.Row}).");
+                            Click(neighbour.Column, neighbour.Row);
+                        }
+                    });
+            }
         }
 
         public void MouseDown(MouseEventArgs e, int col, int row)
@@ -120,11 +143,6 @@ namespace BlazorMinesweeper.Client
         public string Class(int col, int row)
         {
             return _field[col, row].CssClass;
-        }
-
-        public string Content(int col, int row)
-        {
-            return _field[col, row].Content;
         }
     }
 }

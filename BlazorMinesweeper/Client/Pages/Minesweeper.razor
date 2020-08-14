@@ -10,7 +10,7 @@
             {
                 int r = row;
                 int c = col;
-                <button class="@manager.Class(c,r)" @onmousedown="e => manager.MouseDown(e,c,r)" @onclick="() => manager.Click(c,r)">@manager.Content(c,r)</button>
+                <button class="@manager.Class(c,r)" @ondblclick="() => manager.DoubleClick(c,r)"  @onmousedown="e => manager.MouseDown(e,c,r)" @onclick="() => manager.Click(c,r)" oncontextmenu="return false;"></button>
             }
         </div>
     }
