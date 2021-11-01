@@ -183,40 +183,73 @@ app {
 }
 
 .mine-table{
-    border-collapse:collapse;
-    border-spacing:0;
     font-size:0;
 }
 
-.mine-table td {
-    padding: 0;
+.mine-table button {
+    width: 25px;
+    height: 25px;
     margin: 0;
+    padding: 1px;
+    font-size: 10px;
+    box-sizing: unset;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    border-width: 1px;
 }
 
-    .mine-table tr {
-        padding: 0;
-        margin: 0;
+    .mine-table button.val-1 {
+        background-image: url("1.png");
     }
 
-    .mine-table button {
-        width: 20px;
-        height: 20px;
-        margin: 0;
-        padding: 1px;
-        font-size:10px;
-        box-sizing:unset;
+    .mine-table button.val-2 {
+        background-image: url("2.png");
+    }
+
+    .mine-table button.val-3 {
+        background-image: url("3.png");
+    }
+
+    .mine-table button.val-4 {
+        background-image: url("4.png");
+    }
+
+    .mine-table button.val-5 {
+        background-image: url("5.png");
+    }
+
+    .mine-table button.val-6 {
+        background-image: url("6.png");
+    }
+
+    .mine-table button.val-7 {
+        background-image: url("7.png");
+    }
+
+    .mine-table button.val-8 {
+        background-image: url("8.png");
+    }
+
+    .mine-table button.val-0 {
+        border: solid 1px gray;
+        background-color: lightgray;
+    }
+
+    .mine-table button.mine-marked {
+        background-image: url("flag.png");
+    }
+
+    .mine-table button.mine-query {
+        background-image: url("query.png");
     }
 
 button.mine-hidden {
-    width: 20px;
-    height: 20px;
     margin: 0;
     border: outset 1px;
 }
 
 button.mine-shown {
-    width: 20px;
-    height: 20px;
     border: solid 1px gray;
     background-color: lightgray;
 }
@@ -225,7 +258,4 @@ button.mine-blown {
     border: solid 1px gray;
     background-color: lightgray;
     background-image: url("mine.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
 }
